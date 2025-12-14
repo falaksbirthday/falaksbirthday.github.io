@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💖 Happy Birthday ! 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* Modal Styles */
+#modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+#modal.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+#modalContent {
+  background: #1a001f;
+  padding: 20px;
+  border-radius: 20px;
+  max-width: 520px;
+  text-align: center;
+  transform: scale(0.9);
+  transition: transform 0.5s ease;
+}
+#modal.show #modalContent {
+  transform: scale(1);
+}
+#modalContent img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 15px;
+  margin-bottom: 10px;
+}
+
+/* General Styles */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',sans-serif;background:radial-gradient(circle at top,#ff4d6d,#12001a);color:#fff;overflow:hidden;height:100vh}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;transition:.5s;opacity:0;pointer-events:none}
+.screen.active{opacity:1;pointer-events:auto}
+h1{font-size:clamp(2rem,5vw,3rem);margin-bottom:10px}
+p{max-width:520px;margin:10px auto}
+button{padding:14px 38px;margin-top:20px;font-size:1rem;border:none;border-radius:40px;background:linear-gradient(135deg,#ff9f1c,#ff4d6d);color:white;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+button:hover{transform:scale(1.05)}
+#loveContainer{width:80%;height:20px;background:rgba(255,255,255,0.2);border-radius:10px;margin:20px 0;overflow:hidden}
+#loveBar{width:0%;height:100%;background:linear-gradient(90deg,#ff4d6d,#ffd166);border-radius:10px;transition:.3s}
+.float-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
+.float-item{position:absolute;font-size:1.5rem;animation:floatUp linear infinite;user-select:none}
+@keyframes floatUp{0%{transform:translateY(100vh) rotate(0deg);opacity:0}10%{opacity:1}100%{transform:translateY(-20vh) rotate(720deg);opacity:0}}
+#cake{font-size:6rem;cursor:pointer;transition:.3s}
+#cake.cut{transform:scale(1.15) rotate(-6deg)}
+#flame{font-size:2rem;animation:flicker .4s infinite alternate}
+@keyframes flicker{0%{opacity:.6}100%{opacity:1}}
+#bubbleArea{position:relative;width:100%;height:60vh}
+.bubble{position:absolute;padding:14px 20px;background:rgba(255,255,255,0.15);border-radius:30px;cursor:pointer;backdrop-filter:blur(8px);animation:floatBubble 6s ease-in-out infinite}
+@keyframes floatBubble{50%{transform:translateY(-20px)}}
+
+/* Fireworks & Confetti */
+.firework{position:absolute;width:6px;height:6px;border-radius:50%;animation:explode 1.5s ease-out forwards}
+@keyframes explode{to{transform:translate(var(--x),var(--y));opacity:0}}
+.confetti{position:absolute;width:6px;height:10px;top:-20px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+
+/* Floating Gallery Styles */
+#gallery {
+  position: relative;
+  width: 90%;
+  max-width: 400px;
+  height: 250px;
+  margin-top: 15px;
+  overflow: hidden;
+  border-radius: 12px;
+}
+#gallery img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+  animation: floatImage 6s ease-in-out infinite alternate;
+}
+#gallery img.active {
+  opacity: 1;
+}
+@keyframes floatImage {
+  0% { transform: translate(0px, 0px) rotate(0deg); }
+  25% { transform: translate(5px, -5px) rotate(1deg); }
+  50% { transform: translate(-5px, 5px) rotate(-1deg); }
+  75% { transform: translate(5px, 5px) rotate(1deg); }
+  100% { transform: translate(0px, -5px) rotate(0deg); }
+}
+</style>
+</head>
+<body>
+
+<div class="float-container" id="floatContainer"></div>
+
+<!-- Screens -->
+<div class="screen active" id="s1">
+<h1>🎂 Just for you</h1>
+<p>Take your time… every tap matters 💖</p>
+<button onclick="nextScreen(1)">Continue ✨</button>
+</div>
+
+<div class="screen" id="s2">
+<h1>Tap the ❤️ for love</h1>
+<p>Every tap is a wish for you 💌</p>
+<div id="loveArea" style="cursor:pointer;font-size:3rem">❤️</div>
+<div id="loveContainer"><div id="loveBar"></div></div>
+</div>
+
+<div class="screen" id="s3">
+<h1>🎉 Happy Birthday <span style="color:#ffd166">SABREENA</span> 🎉</h1>
+<p id="cakeText">Make a wish… then tap the cake 🎂</p>
+<div style="margin:20px 0">
+<div id="flame">🔥</div>
+<div id="cake">🎂</div>
+</div>
+</div>
+
+<div class="screen" id="s4">
+<h1>💭 Little Thoughts & Days With You</h1>
+<p>Tap a bubble to open a memory ✨</p>
+<div id="bubbleArea">
+<div class="bubble" style="top:20%;left:10%" onclick="openThought(0)">Where it all began 💗</div>
+<div class="bubble" style="top:50%;left:60%" onclick="openThought(1)">Tough days</div>
+<div class="bubble" style="top:70%;left:25%" onclick="openThought(2)">Longevity 🌸</div>
+<div class="bubble" style="top:30%;left:55%" onclick="openThought(3)">Nostalgia 💞</div>
+</div>
+<button onclick="nextScreen(4); finalExplosion()">Next: Songs 🎶</button>
+</div>
+
+<div class="screen" id="s5" style="background:rgba(0,0,0,.9)">
+<h1>🎶 Songs That Feel Like You</h1>
+<p>Click play to enjoy 🎧</p>
+<div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+<iframe id="track1" src="https://open.spotify.com/embed/track/5NvOZCjZaGGGL597exlQWv" width="300" height="80" allowfullscreen></iframe>
+<iframe id="track2" src="https://open.spotify.com/embed/track/3iBgrkexCzVuPy4O9vx7Mf" width="300" height="80" allowfullscreen></iframe>
+<iframe id="track3" src="https://open.spotify.com/embed/track/1gSlPyS178VS0UwWLbgjcl" width="300" height="80" allowfullscreen></iframe>
+</div>
+<button onclick="nextScreen(5)">Next: Gallery & Fireworks 🎆</button>
+</div>
+
+<div class="screen" id="s6">
+<audio id="birthdayAudio" loop>
+  <source src="hbd.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+<h1>💞 US 💞</h1>
+<p>With you, every moment feels like home, every smile feels like sunshine, and every day becomes my favorite story 💫</p>
+<div id="gallery">
+  <img class="photo-slider active" src="Photos/1.jpeg">
+  <img class="photo-slider" src="Photos/2.jpeg">
+  <img class="photo-slider" src="Photos/3.jpeg">
+  <img class="photo-slider" src="Photos/4.jpeg">
+  <img class="photo-slider" src="Photos/5.jpeg">
+  <img class="photo-slider" src="Photos/6.jpeg">
+  <img class="photo-slider" src="Photos/7.jpeg">
+  <img class="photo-slider" src="Photos/8.jpeg">
+  <img class="photo-slider" src="Photos/9.jpeg">
+  <img class="photo-slider" src="Photos/10.jpeg">
+  <img class="photo-slider" src="Photos/11.jpeg">
+  <img class="photo-slider" src="Photos/12.jpeg">
+  <img class="photo-slider" src="Photos/13.jpeg">
+  <img class="photo-slider" src="Photos/14.jpeg">
+  <img class="photo-slider" src="Photos/15.jpeg">
+</div>
+
+<div id="celebrateContainer" style="margin-top:20px; text-align:center;">
+  <button id="celebrateBtn">Celebrate Forever 💖</button>
+  <div id="yayContainer" style="margin-top:15px; text-align:center;"></div>
+</div>
+</div>
+
+<div id="modal" onclick="closeModal()">
+  <div id="modalContent"></div>
+</div>
+
+<script>
+// Screens
+const screens=[s1,s2,s3,s4,s5,s6];
+let currentScreen=0;
+function nextScreen(n){
+  screens[currentScreen].classList.remove('active');
+  screens[n].classList.add('active');
+  currentScreen=n;
+
+  if(n === 5){
+    birthdayAudio.volume = 0.5;
+    birthdayAudio.play().catch(()=>{});
+  } else {
+    birthdayAudio.pause();
+    birthdayAudio.currentTime = 0;
+  }
+}
+
+// Love taps
+const loveArea=document.getElementById('loveArea');
+const loveBar=document.getElementById('loveBar');
+let loveCount=0;
+loveArea.addEventListener('click',()=>{
+ loveCount++;
+ loveBar.style.width=Math.min(loveCount*20,100)+'%';
+ spawnFloat('❤️');
+ if(loveCount>=5){nextScreen(2);}
+});
+
+// Cake
+const cake=document.getElementById('cake');
+const flame=document.getElementById('flame');
+const cakeText=document.getElementById('cakeText');
+let cut=false;
+cake.onclick=()=>{
+ if(cut) return;
+ cut=true;
+ flame.style.display='none';
+ cake.textContent='🍰';
+ cake.classList.add('cut');
+ cakeText.textContent='Cake cut! 🎉';
+ confetti(); spawnFloat('💖');
+ setTimeout(()=>nextScreen(3),1800);
+}
+
+// Thought bubbles
+const thoughts=[
+ {text:'From the little giggles in your childhood to the sparkle in your eyes today, every moment shaped the amazing person you are 💖',img:'Photos/11.jpeg'},
+ {text:'Even if I am far from you, you would never leave my mind, not even for a second. You presence feels like magic and your absence feels like poison...',img:'Photos/6.jpeg'},
+ {text:'Its been 3 years 4 months and 22 days since we are together, through thick and thin, many arguments, still we are here !',img:'Photos/3.jpeg'},
+ {text:'From the days where I peeked into your class just to get a look of you to these days, many things have changed but my love for you has not even changed a bit.',img:'Photos/4.jpeg'}
+];
+function openThought(i){
+ const m=document.getElementById('modal');
+ const c=document.getElementById('modalContent');
+ c.innerHTML=`<img src="${thoughts[i].img}"><p>${thoughts[i].text}</p>`;
+ m.classList.add('show');
+ spawnFloat('💖');
+}
+function closeModal(){document.getElementById('modal').classList.remove('show');}
+
+// Floating emojis
+function spawnFloat(emoji){
+ const f=document.createElement('div');
+ f.className='float-item';
+ f.textContent=emoji || (Math.random()>.5?'🎈':'💖');
+ f.style.left=Math.random()*100+'vw';
+ f.style.fontSize=1.5+Math.random()*2+'rem';
+ f.style.animationDuration=3+Math.random()*5+'s';
+ document.getElementById('floatContainer').appendChild(f);
+ setTimeout(()=>f.remove(),7000);
+}
+setInterval(()=>spawnFloat(),500);
+
+// Explosives
+function finalExplosion(){
+ for(let i=0;i<5;i++) setTimeout(explode,i*400);
+ if(navigator.vibrate) navigator.vibrate([300,150,300]);
+}
+function explode(){
+ const cx=Math.random()*window.innerWidth*0.8+window.innerWidth*0.1;
+ const cy=Math.random()*window.innerHeight*0.5+window.innerHeight*0.1;
+ for(let i=0;i<180;i++){
+  const f=document.createElement('div');
+  f.className='firework';
+  f.style.left=cx+'px'; f.style.top=cy+'px';
+  f.style.background=`hsl(${Math.random()*360},100%,60%)`;
+  const angle=Math.random()*Math.PI*2;
+  const radius=Math.random()*500;
+  f.style.setProperty('--x',Math.cos(angle)*radius+'px');
+  f.style.setProperty('--y',Math.sin(angle)*radius+'px');
+  document.body.appendChild(f);
+  setTimeout(()=>f.remove(),1500);
+ }
+}
+
+// Gallery slideshow
+const photos = document.querySelectorAll('#gallery img');
+let index = 0;
+function showNextPhoto(){
+  photos.forEach((p,i)=>p.classList.remove('active'));
+  photos[index].classList.add('active');
+  index = (index + 1) % photos.length;
+}
+showNextPhoto();
+setInterval(showNextPhoto, 3000);
+
+// Confetti
+function confetti(){
+ for(let i=0;i<100;i++){
+  const c=document.createElement('div');
+  c.className='confetti';
+  c.style.left=Math.random()*100+'vw';
+  c.style.width='6px';
+  c.style.height='10px';
+  c.style.background=`hsl(${Math.random()*360},100%,50%)`;
+  c.style.animationDuration=2+Math.random()*2+'s';
+  document.body.appendChild(c);
+  setTimeout(()=>c.remove(),4000);
+ }
+}
+
+// Celebrate modal & Yayy button
+const celebrateBtn = document.getElementById('celebrateBtn');
+const yayContainer = document.getElementById('yayContainer');
+const modal = document.getElementById('modal');
+const modalContent = document.getElementById('modalContent');
+
+celebrateBtn.onclick = () => {
+  modalContent.innerHTML = `
+    <p style="font-size:1.2rem; margin-bottom:15px;">
+      Every day with you is brighter, every smile of yours makes my heart flutter. You make my world magical 💖. My words cannot express the love for you but everything about you is perfect. The way you are here within me is something only and only I know and no one would ever be able to feel for you in that way.... Once again, HAPPY BIRTHDAY AND THANK YOU FOR MAKING MY LIFE SO SPECIAL...
+    </p>
+    <button id="modalCloseBtn" style="
+      padding:12px 30px;
+      font-size:1rem;
+      border:none;
+      border-radius:30px;
+      background:linear-gradient(135deg,#ff9f1c,#ff4d6d);
+      color:white;
+      cursor:pointer;
+    ">Close</button>
+  `;
+  modal.classList.add('show');
+
+  document.getElementById('modalCloseBtn').onclick = () => {
+    modal.classList.remove('show');
+    setTimeout(() => addYayyButton(), 500);
+  };
+};
+
+function addYayyButton(){
+  if(!document.getElementById('yayBtn')){
+    const yayBtn = document.createElement('button');
+    yayBtn.id = 'yayBtn';
+    yayBtn.textContent = "Yayy! 🎆";
+    yayBtn.style.padding = "12px 30px";
+    yayBtn.style.marginTop = "10px";
+    yayBtn.style.fontSize = "1rem";
+    yayBtn.style.border = "none";
+    yayBtn.style.borderRadius = "30px";
+    yayBtn.style.background = "linear-gradient(135deg,#ff9f1c,#ff4d6d)";
+    yayBtn.style.color = "white";
+    yayBtn.style.cursor = "pointer";
+    yayBtn.onclick = finalExplosion;
+    yayContainer.appendChild(yayBtn);
+  }
+}
+
+// Clicking outside modal closes
+modal.onclick = (e) => {
+  if(e.target.id === 'modal'){
+    modal.classList.remove('show');
+    setTimeout(() => addYayyButton(), 500);
+  }
+};
+</script>
+</body>
+</html>
