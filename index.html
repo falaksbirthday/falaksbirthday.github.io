@@ -5,107 +5,415 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>💖 Happy Birthday ! 💖</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💖 Happy Birthday 💖</title>
+
+<!-- Romantic Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
 <style>
-/* Modal Styles */
+/* RESET */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* BODY */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at top, #ff8fab, #2b0015);
+  color: #fff;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* SCREENS */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.6s ease;
+}
+
+.screen.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.screen > * {
+  z-index: 2;
+}
+
+.screen::before {
+  content: "";
+  position: absolute;
+  inset: 8%;
+  background: rgba(255,255,255,0.12);
+  border-radius: 28px;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 0 50px rgba(255,105,180,0.25);
+  z-index: 1;
+}
+
+
+/* HEADINGS */
+h1 {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(2.4rem, 6vw, 3.4rem);
+  margin-bottom: 12px;
+  color: #ffe1ec;
+  text-shadow: 0 4px 18px rgba(255,105,180,0.45);
+}
+
+
+p {
+  max-width: 520px;
+  margin: 10px auto;
+  font-size: 1rem;
+  color: #ffe9f2;
+  line-height: 1.6;
+}
+
+/* BUTTONS */
+button {
+  padding: 14px 34px;
+  margin-top: 22px;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.25);
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,0.35),
+    rgba(255,182,193,0.45)
+  );
+  color: #2b0015;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(14px);
+  box-shadow:
+    0 8px 24px rgba(255,105,180,0.35),
+    inset 0 0 0 rgba(255,255,255,0);
+  transition: all 0.35s ease;
+}
+
+button:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 14px 40px rgba(255,105,180,0.55);
+}
+
+button:active {
+  transform: scale(0.96);
+}
+
+
+/* LOVE BAR */
+#constellation{
+  display:flex;
+  gap:18px;
+  margin:20px 0;
+}
+
+.star{
+  font-size:2.5rem;
+  cursor:pointer;
+  filter:grayscale(100%) opacity(.4);
+  transition:0.3s ease;
+}
+
+.star.active{
+  filter:none;
+  transform:scale(1.3);
+  text-shadow:0 0 18px gold;
+}
+
+#loveContainer{
+  width:80%;
+  height:14px;
+  background:rgba(255,255,255,0.25);
+  border-radius:50px;
+  overflow:hidden;
+}
+
+#loveBar{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#ff4d6d,#ffd6e8,#ff4d6d);
+  transition:width 0.4s ease;
+}
+
+
+@keyframes loveFlow {
+  from { background-position: 0 0; }
+  to { background-position: 200% 0; }
+}
+
+
+/* FLOATING HEARTS */
+.float-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.float-item {
+  position: absolute;
+  font-size: 1.8rem;
+  animation: floatUp linear infinite;
+  filter: drop-shadow(0 0 6px rgba(255,105,180,0.8));
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(100vh); opacity: 0; }
+  15% { opacity: 1; }
+  100% { transform: translateY(-20vh) rotate(720deg); opacity: 0; }
+}
+
+/* CAKE */
+#cake {
+  font-size: 6rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+  filter: drop-shadow(0 0 20px rgba(255,182,193,0.9));
+}
+
+#cake.cut {
+  transform: scale(1.2) rotate(-8deg);
+}
+
+#flame {
+  font-size: 2.2rem;
+  animation: flicker 0.4s infinite alternate;
+}
+
+@keyframes flicker {
+  from { opacity: 0.6; }
+  to { opacity: 1; }
+}
+
+/* MEMORY BUBBLES */
+#bubbleArea {
+  width: 100%;
+  height: 60vh;
+  position: relative;
+}
+
+.bubble {
+position: absolute;
+  padding: 14px 22px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 40px;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  animation: floatBubble 6s ease-in-out infinite;
+  color: #fff6d6;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.bubble:hover {
+  transform: translateY(-6px) scale(1.05);
+}
+
+
+@keyframes floatBubble {
+  50% { transform: translateY(-18px); }
+}
+
+/* MODAL */
 #modal {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.85);
+  background: rgba(30,0,15,0.85);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
-  z-index: 10;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.5s ease;
+  transition: 0.4s;
+  z-index: 10;
 }
+
 #modal.show {
   opacity: 1;
   pointer-events: auto;
 }
+
 #modalContent {
-  background: #1a001f;
-  padding: 20px;
-  border-radius: 20px;
-  max-width: 520px;
-  text-align: center;
-  transform: scale(0.9);
-  transition: transform 0.5s ease;
+  background: linear-gradient(
+    145deg,
+    rgba(255,255,255,0.25),
+    rgba(255,182,193,0.15)
+  );
+  backdrop-filter: blur(22px);
+  border-radius: 32px;
+  padding: 30px;
+  box-shadow: 0 0 60px rgba(255,105,180,0.6);
 }
+
+
 #modal.show #modalContent {
   transform: scale(1);
 }
+
 #modalContent img {
   width: 100%;
   max-height: 300px;
   object-fit: contain;
-  border-radius: 15px;
-  margin-bottom: 10px;
+  border-radius: 18px;
+  margin-bottom: 14px;
 }
 
-/* General Styles */
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Poppins',sans-serif;background:radial-gradient(circle at top,#ff4d6d,#12001a);color:#fff;overflow:hidden;height:100vh}
-.screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;transition:.5s;opacity:0;pointer-events:none}
-.screen.active{opacity:1;pointer-events:auto}
-h1{font-size:clamp(2rem,5vw,3rem);margin-bottom:10px}
-p{max-width:520px;margin:10px auto}
-button{padding:14px 38px;margin-top:20px;font-size:1rem;border:none;border-radius:40px;background:linear-gradient(135deg,#ff9f1c,#ff4d6d);color:white;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.4)}
-button:hover{transform:scale(1.05)}
-#loveContainer{width:80%;height:20px;background:rgba(255,255,255,0.2);border-radius:10px;margin:20px 0;overflow:hidden}
-#loveBar{width:0%;height:100%;background:linear-gradient(90deg,#ff4d6d,#ffd166);border-radius:10px;transition:.3s}
-.float-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
-.float-item{position:absolute;font-size:1.5rem;animation:floatUp linear infinite;user-select:none}
-@keyframes floatUp{0%{transform:translateY(100vh) rotate(0deg);opacity:0}10%{opacity:1}100%{transform:translateY(-20vh) rotate(720deg);opacity:0}}
-#cake{font-size:6rem;cursor:pointer;transition:.3s}
-#cake.cut{transform:scale(1.15) rotate(-6deg)}
-#flame{font-size:2rem;animation:flicker .4s infinite alternate}
-@keyframes flicker{0%{opacity:.6}100%{opacity:1}}
-#bubbleArea{position:relative;width:100%;height:60vh}
-.bubble{position:absolute;padding:14px 20px;background:rgba(255,255,255,0.15);border-radius:30px;cursor:pointer;backdrop-filter:blur(8px);animation:floatBubble 6s ease-in-out infinite}
-@keyframes floatBubble{50%{transform:translateY(-20px)}}
-
-/* Fireworks & Confetti */
-.firework{position:absolute;width:6px;height:6px;border-radius:50%;animation:explode 1.5s ease-out forwards}
-@keyframes explode{to{transform:translate(var(--x),var(--y));opacity:0}}
-.confetti{position:absolute;width:6px;height:10px;top:-20px;animation:fall linear forwards}
-@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
-
-/* Floating Gallery Styles */
+/* GALLERY */
 #gallery {
   position: relative;
   width: 90%;
-  max-width: 400px;
-  height: 250px;
-  margin-top: 15px;
+  max-width: 420px;
+  height: 260px;
+  margin-top: 16px;
+  border-radius: 18px;
   overflow: hidden;
-  border-radius: 12px;
+  padding: 14px;
+  border-radius: 24px;
+  box-shadow: 0 0 30px rgba(255,105,180,0.5);
 }
+
 #gallery img {
   position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: contain;
-  border-radius: 12px;
-  top: 0;
-  left: 0;
   opacity: 0;
-  transition: opacity 1.5s ease-in-out;
+  transition: opacity 1.6s ease;
   animation: floatImage 6s ease-in-out infinite alternate;
 }
+
 #gallery img.active {
   opacity: 1;
 }
+
 @keyframes floatImage {
-  0% { transform: translate(0px, 0px) rotate(0deg); }
-  25% { transform: translate(5px, -5px) rotate(1deg); }
-  50% { transform: translate(-5px, 5px) rotate(-1deg); }
-  75% { transform: translate(5px, 5px) rotate(1deg); }
-  100% { transform: translate(0px, -5px) rotate(0deg); }
+  0% { transform: translate(0,0); }
+  50% { transform: translate(-6px,6px); }
+  100% { transform: translate(0,-6px); }
 }
+
+/* CONFETTI & FIREWORKS */
+.confetti {
+  position: absolute;
+  width: 6px;
+  height: 10px;
+  top: -20px;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.firework {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  animation: explode 1.5s ease-out forwards;
+}
+
+@keyframes explode {
+  to {
+    transform: translate(var(--x), var(--y));
+    opacity: 0;
+  }
+}
+
+/* CONSTELLATION */
+#sky{
+  position:relative;
+  width:340px;
+  height:360px;
+  margin:20px auto;
+  background:radial-gradient(circle,#0b1d3a,#020611);
+  border-radius:22px;
+  box-shadow:0 0 40px rgba(120,180,255,.35);
+  touch-action:none;
+}
+
+/* Aquarius constellation points */
+.target{
+  position:absolute;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  background:rgba(170,220,255,.35);
+  box-shadow:0 0 16px rgba(150,220,255,.9);
+}
+
+/* Place Aquarius shape */
+.target:nth-child(1){left:18%;top:30%}
+.target:nth-child(2){left:30%;top:45%}
+.target:nth-child(3){left:42%;top:35%}
+.target:nth-child(4){left:58%;top:50%}
+.target:nth-child(5){left:72%;top:40%}
+.target:nth-child(6){left:60%;top:65%}
+.target:nth-child(7){left:40%;top:60%}
+
+/* Draggable stars */
+.star{
+  position:absolute;
+  font-size:2.4rem;
+  cursor:grab;
+  user-select:none;
+  touch-action:none;
+  transition:transform .15s ease;
+}
+
+.star:active{
+  transform:scale(1.2);
+}
+
+.star.locked {
+  cursor: default;
+  transform: scale(1.5);
+  border: goldenrod;
+  text-shadow:
+    0 0 10px #9fd3ff,
+    0 0 20px #9fd3ff,
+    0 0 30px #9fd3ff,
+    0 0 40px #9fd3ff;
+  transition: all 0.5s ease;
+}
+
+@keyframes bigBurst {
+  0% { transform: scale(0); opacity: 1; }
+  100% { transform: scale(2) translate(var(--x), var(--y)); opacity: 0; }
+}
+
+.burst-star {
+  position: absolute;
+  font-size: 1.5rem;
+  pointer-events: none;
+  animation: bigBurst 1s forwards;
+}
+
+
 </style>
 </head>
+
 <body>
 
 <div class="float-container" id="floatContainer"></div>
@@ -113,19 +421,42 @@ button:hover{transform:scale(1.05)}
 <!-- Screens -->
 <div class="screen active" id="s1">
 <h1>🎂 Just for you</h1>
-<p>Take your time… every tap matters 💖</p>
+<p>Take your time… only start when you feel loved 💖</p>
 <button onclick="nextScreen(1)">Continue ✨</button>
 </div>
 
 <div class="screen" id="s2">
-<h1>Tap the ❤️ for love</h1>
-<p>Every tap is a wish for you 💌</p>
-<div id="loveArea" style="cursor:pointer;font-size:3rem">❤️</div>
-<div id="loveContainer"><div id="loveBar"></div></div>
+  <h1>✨ Align the Stars ✨</h1>
+  <p>Complete the constellation</p>
+
+ <div id="sky">
+  <!-- Aquarius constellation target points -->
+  <div class="target" style="left:15%; top:30%"></div>
+  <div class="target" style="left:28%; top:45%"></div>
+  <div class="target" style="left:40%; top:35%"></div>
+  <div class="target" style="left:55%; top:50%"></div>
+  <div class="target" style="left:70%; top:40%"></div>
+  <div class="target" style="left:60%; top:65%"></div>
+  <div class="target" style="left:42%; top:60%"></div>
+
+  <!-- draggable stars -->
+  <div class="star">⭐</div>
+  <div class="star">⭐</div>
+  <div class="star">⭐</div>
+  <div class="star">⭐</div>
+  <div class="star">⭐</div>
+  <div class="star">⭐</div>
+  <div class="star">⭐</div>
 </div>
 
+  <div id="loveContainer" style="margin-top:18px">
+    <div id="loveBar"></div>
+  </div>
+</div>
+
+
 <div class="screen" id="s3">
-<h1>🎉 Happy Birthday <span style="color:#ffd166">SABREENA</span> 🎉</h1>
+<h1>🎉 Happy Birthday <span style="color:#ffd166">Falak</span> 🎉</h1>
 <p id="cakeText">Make a wish… then tap the cake 🎂</p>
 <div style="margin:20px 0">
 <div id="flame">🔥</div>
@@ -173,12 +504,6 @@ button:hover{transform:scale(1.05)}
   <img class="photo-slider" src="Photos/7.jpeg">
   <img class="photo-slider" src="Photos/8.jpeg">
   <img class="photo-slider" src="Photos/9.jpeg">
-  <img class="photo-slider" src="Photos/10.jpeg">
-  <img class="photo-slider" src="Photos/11.jpeg">
-  <img class="photo-slider" src="Photos/12.jpeg">
-  <img class="photo-slider" src="Photos/13.jpeg">
-  <img class="photo-slider" src="Photos/14.jpeg">
-  <img class="photo-slider" src="Photos/15.jpeg">
 </div>
 
 <div id="celebrateContainer" style="margin-top:20px; text-align:center;">
@@ -208,18 +533,6 @@ function nextScreen(n){
     birthdayAudio.currentTime = 0;
   }
 }
-
-// Love taps
-const loveArea=document.getElementById('loveArea');
-const loveBar=document.getElementById('loveBar');
-let loveCount=0;
-loveArea.addEventListener('click',()=>{
- loveCount++;
- loveBar.style.width=Math.min(loveCount*20,100)+'%';
- spawnFloat('❤️');
- if(loveCount>=5){nextScreen(2);}
-});
-
 // Cake
 const cake=document.getElementById('cake');
 const flame=document.getElementById('flame');
@@ -238,9 +551,9 @@ cake.onclick=()=>{
 
 // Thought bubbles
 const thoughts=[
- {text:'From the little giggles in your childhood to the sparkle in your eyes today, every moment shaped the amazing person you are 💖',img:'Photos/11.jpeg'},
+ {text:'From the little giggles in your childhood to the sparkle in your eyes today, every moment shaped the amazing person you are 💖',img:'Photos/9.jpeg'},
  {text:'Even if I am far from you, you would never leave my mind, not even for a second. You presence feels like magic and your absence feels like poison...',img:'Photos/6.jpeg'},
- {text:'Its been 3 years 4 months and 22 days since we are together, through thick and thin, many arguments, still we are here !',img:'Photos/3.jpeg'},
+ {text:'Its been 2 months since we are together, but still it feels like a lifetime to me and I feel like it have been the best time of my life..!',img:'Photos/3.jpeg'},
  {text:'From the days where I peeked into your class just to get a look of you to these days, many things have changed but my love for you has not even changed a bit.',img:'Photos/4.jpeg'}
 ];
 function openThought(i){
@@ -367,6 +680,109 @@ modal.onclick = (e) => {
     setTimeout(() => addYayyButton(), 500);
   }
 };
+
+// Star constellation logic
+const sky = document.getElementById('sky');
+const stars = document.querySelectorAll('.star');
+const targets = document.querySelectorAll('.target');
+
+let placedCount = 0;
+
+// Scatter stars at bottom
+stars.forEach(star=>{
+  star.style.left = Math.random()*260 + 30 + 'px';
+  star.style.top = 260 + Math.random()*60 + 'px';
+});
+
+// Drag logic
+stars.forEach(star=>{
+  let offsetX, offsetY;
+
+  star.addEventListener('pointerdown', e=>{
+    if(star.classList.contains('locked')) return;
+
+    star.setPointerCapture(e.pointerId);
+    offsetX = e.clientX - star.offsetLeft;
+    offsetY = e.clientY - star.offsetTop;
+  });
+
+  star.addEventListener('pointermove', e=>{
+    if(!star.hasPointerCapture(e.pointerId)) return;
+
+    star.style.left = e.clientX - offsetX + 'px';
+    star.style.top  = e.clientY - offsetY + 'px';
+  });
+
+  star.addEventListener('pointerup', ()=>{
+    snapToTarget(star);
+  });
+});
+
+function snapToTarget(star){
+  let closestTarget = null;
+  let minDistance = Infinity;
+
+  targets.forEach(target=>{
+    if(target.dataset.filled) return; // skip filled
+
+    const sx = star.offsetLeft + star.offsetWidth/2;
+    const sy = star.offsetTop + star.offsetHeight/2;
+    const tx = target.offsetLeft + target.offsetWidth/2;
+    const ty = target.offsetTop + target.offsetHeight/2;
+
+    const distance = Math.hypot(sx - tx, sy - ty);
+    if(distance < 40 && distance < minDistance){
+      closestTarget = target;
+      minDistance = distance;
+    }
+  });
+
+  if(closestTarget){
+    star.style.transition = 'all 0.5s ease';
+    star.style.left = closestTarget.offsetLeft - 6 + 'px';
+    star.style.top  = closestTarget.offsetTop - 10 + 'px';
+    star.classList.add('locked');
+    closestTarget.dataset.filled = true;
+    placedCount++;
+
+    spawnFloat('💫');
+
+    // If all stars are placed → big burst
+    if(placedCount === targets.length){
+      setTimeout(bigBurstEffect, 300);
+      setTimeout(()=>nextScreen(2), 1800);
+    }
+  } else {
+    // gently return if no snap
+    star.style.top = 260 + Math.random()*40 + 'px';
+  }
+}
+
+
+
+function bigBurstEffect(){
+  const skyRect = sky.getBoundingClientRect();
+  const centerX = skyRect.width / 2;
+  const centerY = skyRect.height / 2;
+
+  for(let i=0;i<50;i++){
+    const burst = document.createElement('div');
+    burst.className = 'burst-star';
+    burst.textContent = '✨';
+    burst.style.left = centerX + 'px';
+    burst.style.top = centerY + 'px';
+
+    const angle = Math.random() * 2 * Math.PI;
+    const radius = 80 + Math.random() * 100;
+    burst.style.setProperty('--x', Math.cos(angle) * radius + 'px');
+    burst.style.setProperty('--y', Math.sin(angle) * radius + 'px');
+
+    sky.appendChild(burst);
+    setTimeout(()=>burst.remove(), 1200);
+  }
+}
+
+
 </script>
 </body>
 </html>

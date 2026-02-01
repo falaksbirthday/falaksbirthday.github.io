@@ -29,3 +29,25 @@ giftBox.onclick = () => {
     finalMessage.classList.remove("hidden");
     giftBox.innerText = "🎉";
 };
+
+// Star constellation logic
+const stars = document.querySelectorAll('.star');
+const loveBar = document.getElementById('loveBar');
+let starCount = 0;
+
+stars.forEach((star, index) => {
+  star.addEventListener('click', () => {
+    if(star.classList.contains('active')) return;
+
+    star.classList.add('active');
+    starCount++;
+
+    loveBar.style.width = (starCount / stars.length) * 100 + '%';
+    spawnFloat('✨');
+
+    if(starCount === stars.length){
+      setTimeout(() => nextScreen(2), 900);
+    }
+  });
+});
+

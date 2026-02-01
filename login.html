@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💖 Login 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* Body & general layout */
+body{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  font-family:'Poppins', sans-serif;
+  background: radial-gradient(circle at top,#ff4d6d,#12001a);
+  color:#fff;
+  flex-direction:column;
+  text-align:center;
+  overflow:hidden;
+  position:relative;
+}
+
+/* Floating hearts background */
+.heart{
+  position:absolute;
+  font-size:1.5rem;
+  animation:floatHeart linear infinite;
+  user-select:none;
+  opacity:0.8;
+}
+@keyframes floatHeart{
+  0%{transform:translateY(100vh) rotate(0deg); opacity:0;}
+  10%{opacity:1;}
+  100%{transform:translateY(-20vh) rotate(720deg); opacity:0;}
+}
+
+/* Login container */
+.login-box{
+  background: rgba(255,255,255,0.1);
+  padding:40px 30px;
+  border-radius:30px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  z-index:1;
+}
+
+/* Titles */
+h1{
+  margin-bottom:20px;
+  font-size:2.5rem;
+  color:#fff;
+  text-shadow: 0 0 10px #ff9f1c, 0 0 20px #ff4d6d;
+}
+
+/* Inputs */
+input{
+  padding:14px 20px;
+  margin:10px 0;
+  border-radius:30px;
+  border:none;
+  width:220px;
+  text-align:center;
+  font-size:1rem;
+  outline:none;
+  transition:0.3s;
+  background: rgba(255,255,255,0.15);
+  color:#fff;
+  box-shadow: inset 0 0 10px rgba(255,255,255,0.2);
+}
+input::placeholder{
+  color:rgba(255,255,255,0.7);
+}
+input:focus{
+  background: rgba(255,255,255,0.25);
+  box-shadow: 0 0 15px #ff9f1c, 0 0 30px #ff4d6d;
+}
+
+/* Button */
+button{
+  padding:14px 40px;
+  font-size:1rem;
+  border:none;
+  border-radius:30px;
+  background:linear-gradient(135deg,#ff9f1c,#ff4d6d);
+  color:white;
+  cursor:pointer;
+  margin-top:10px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.3);
+  transition:0.3s;
+}
+button:hover{
+  transform:scale(1.1);
+  box-shadow:0 12px 25px rgba(0,0,0,0.5);
+}
+
+/* Error text */
+#error{
+  color:#ffcccb;
+  margin-top:12px;
+  font-weight:600;
+  text-shadow: 0 0 5px #ff0000;
+}
+</style>
+</head>
+<body>
+
+<div class="login-box">
+  <h1>💖 THIS IS ONLY FOR SOMEONE SPECIAL !! 💖</h1>
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+  <div id="error"></div>
+</div>
+
+<script>
+// Floating hearts animation
+function spawnHeart(){
+  const heart = document.createElement('div');
+  heart.className = 'heart';
+  heart.textContent = '💖';
+  heart.style.left = Math.random() * 100 + 'vw';
+  heart.style.fontSize = 14 + Math.random()*20 + 'px';
+  heart.style.animationDuration = 4 + Math.random()*6 + 's';
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(), 10000);
+}
+setInterval(spawnHeart, 500);
+
+// Login functionality
+function login(){
+  const user = document.getElementById('username').value;
+  const pass = document.getElementById('password').value;
+
+  const correctUser = "For your day";
+  const correctPass = "Sabree@251619";
+
+  if(user === correctUser && pass === correctPass){
+    window.location.href = "index.html"; // redirect to birthday page
+  } else {
+    document.getElementById('error').textContent = "❌ Incorrect username or password!";
+  }
+}
+</script>
+
+</body>
+</html>
